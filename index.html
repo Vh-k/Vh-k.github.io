@@ -3,6 +3,18 @@
         height: 100%;
     }
 
+    .font{
+        animation: color-change 1s infinite;
+    }
+
+    @keyframes color-change {
+        0% { color: red; }
+        25% { color: green; }
+        50% { color: blue; }
+        50% { color: yellow; }
+        100% { color: red; }
+    }
+
     .bg {
         /* The image used */
         background-image: url("woa.png");
@@ -25,11 +37,30 @@
         left: 0;
         bottom: 0;
     }
+
+    @keyframes float {
+        0% {
+            transform: translatey(0px);
+        }
+        50% {
+            transform: translatey(-20px);
+        }
+        100% {
+            transform: translatey(0px);
+        }
+    }
+
+    h1, h2{
+        animation: float 6s ease-in-out infinite;
+    }
+
+
 </style>
 
 <!-- Display the countdown timer in an element -->
 <html>
 <body class="bg">
+<br>
 <h1>Is het al tijd voor tafeltennis?</h1>
 <h2 id="demo"></h2>
 <div class="shrekn"></div>
@@ -66,6 +97,7 @@
             clearInterval(x);
             document.getElementById("demo").innerHTML = "Het is tijd voor tafeltennis!";
             document.querySelector('.shrekn').style.display = 'block'
+            document.getElementById("demo").classList.add('font')
         }
     }, 1000);
 </script>

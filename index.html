@@ -15,6 +15,16 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+
+    .shrekn {
+        height: 200px;
+        width: 300px;
+        display: none;
+        background-image: url("shrekn.gif");
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
 </style>
 
 <!-- Display the countdown timer in an element -->
@@ -22,6 +32,7 @@
 <body class="bg">
 <h1>Is het al tijd voor tafeltennis?</h1>
 <h2 id="demo"></h2>
+<div class="shrekn"></div>
 </body>
 </html>
 
@@ -54,6 +65,7 @@
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("demo").innerHTML = "Het is tijd voor tafeltennis!";
+            document.querySelector('.shrekn').style.display = 'block'
         }
     }, 1000);
 </script>

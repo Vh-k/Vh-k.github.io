@@ -18,6 +18,8 @@
     .bg {
         /* The image used */
         background-image: url("woa.png");
+        /*background-image: url("pepeyeah.jpg");*/
+        /*opacity: 0.75;*/
 
         /* Full height */
         height: 100%;
@@ -59,18 +61,21 @@
 
 <!-- Display the countdown timer in an element -->
 <html>
-<body class="bg">
-<br>
-<h1>Is het al tijd voor tafeltennis?</h1>
-<h2 id="demo"></h2>
-<div class="shrekn"></div>
+<body>
+<div class="bg">
+    <br>
+    <h1>Is het al tijd voor tafeltennis?</h1>
+    <h2 id="demo"></h2>
+    <div class="shrekn"></div>
+</div>
+
 </body>
 </html>
 
 <script>
     // Set the date we're counting down to
     let w = new Date()
-    w.setHours(10,0,0,0)
+    w.setHours(12,27,0,0)
     let countDownDate = w.getTime();
 
     // Update the count down every 1 second

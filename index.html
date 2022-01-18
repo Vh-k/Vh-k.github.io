@@ -93,29 +93,23 @@
             this.#endTime = [parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), parseInt(endTime.split(':')[2]), 0]
             this.updateTime()
         }
-        updateTime(){
+        updateTime(addDays = 0){
             let startDate = new Date()
             let endDate = new Date()
-            let currentDate = new Date()
+            startDate.setDate(startDate.getDate() + addDays)
+            endDate.setDate(endDate.getDate() + addDays)
             startDate.setHours(...this.#startTime)
             endDate.setHours(...this.#endTime)
-
-            if (endDate - currentDate.getTime() < 0){
-                startDate.setDate(currentDate.getDate() + 1)
-                endDate.setDate(currentDate.getDate() + 1)
-            }
-
             this.#startDate = startDate
             this.#endDate = endDate
         }
         isActive(){
             let current = new Date()
-            console.log({
-                curr: current.getTime(),
-                start: this.#startDate.getTime(),
-                end: this.#endDate.getTime(),
 
-            })
+            if (current.getDate() !== this.#endDate.getDate()) {
+                this.updateTime()
+            }
+          
             return (current.getTime() >= this.#startDate.getTime() && current.getTime() < this.#endDate.getTime())
         }
         getStart(){
@@ -130,10 +124,6 @@
 
             // Find the distance between now and the count down date
             let distance = this.#startDate - now;
-
-            if (distance < 0){
-                this.updateTime()
-            }
 
             // Time calculations for days, hours, minutes and seconds
             return {
@@ -183,6 +173,12 @@
                 }
             }
         })
+
+        if (currentSlot.getDifference().time < 0) {
+            // This is the closest slot tomorrow. Set date to tomorrow
+            currentSlot.updateTime(1)
+        }
+
         return currentSlot
     }
 
@@ -190,20 +186,22 @@
         let closestSlot = null
         timeslots.forEach(function(timeslot){
             if(!slotActive){
-                if(timeslot.isActive){
-                    console.log(timeslot)
+                if(timeslot.isActive()){
                     slotActive = true
                     timeslot.doStuff()
                 }
             }
         })
 
-        // TODO: Pick closest slot & use the difference
-        let timerSlot = getClosestSlot()
+        // If all slots have negative time difference, pick the slot with the closest startDate. We'll set this one up for tomorrow
+        let timerSlot = getClosestSlot() 
+
+        console.log(timerSlot)
+        clearInterval(x)
 
         if(!slotActive){
             // Display the result in the element with id="demo"
-            document.getElementById("demo").innerHTML = "Het is over " + timerSlot.getDifference.hours + " uur " + timerSlot.getDifference.minutes + " minuten en " + timerSlot.getDifference.seconds + " seconden pas tijd voor tafeltennis 😉";
+            document.getElementById("demo").innerHTML = "Het is over " + timerSlot.getDifference().hours + " uur " + timerSlot.getDifference().minutes + " minuten en " + timerSlot.getDifference().seconds + " seconden pas tijd voor tafeltennis 😉";
         }        
     }, 1000);
 </script>

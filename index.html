@@ -73,6 +73,66 @@
 </html>
 
 <script>
+    class TimeSlot {
+        #startDate;
+        #endDate;
+        #startTime = [];
+        #endTime = [];
+        constructor(startTime = '12:00:00', endTime = '13:00:00'){
+            this.#startTime = [parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]), parseInt(startTime.split(':')[2]), 0]
+            this.#endTime = [parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), parseInt(endTime.split(':')[2]), 0]
+            this.updateTime()
+        }
+        updateTime(){
+            let startDate = new Date()
+            let endDate = new Date()
+            let currentDate = new Date()
+            startDate.setHours(...this.#startTime)
+            endDate.setHours(...this.#endTime)
+
+            if (startDate - currentDate.getTime() < 0){
+                startDate.setDate(currentDate.getDate() + 1)
+                endDate.setDate(currentDate.getDate() + 1)
+            }
+
+            this.#startDate = startDate
+            this.#endDate = endDate
+        }
+        getStart(){
+            return this.#startDate
+        }
+        getEnd(){
+            return this.#endDate
+        }
+        getDifference(){
+            // Get today's date and time
+            let now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            let distance = this.#startDate - now;
+
+            if (distance < 0){
+                this.updateTime()
+            }
+
+            // Time calculations for days, hours, minutes and seconds
+            return {
+                time: distance,
+                days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+                seconds: Math.floor((distance % (1000 * 60)) / 1000),
+            }
+        }
+    }
+
+    let firstBreak = new TimeSlot('10:00:00', '10:15:00')
+    let lunchBreak = new TimeSlot('12:30:00', '13:15:00')
+    let doneWithWork = new TimeSlot('17:00:00', '23:59:59')
+
+
+    // TODO: Iterate through TimeSlots, execute timeslot function between times
+
     // Set the date we're counting down to
     let w = new Date()
     w.setHours(17,0,0,0)

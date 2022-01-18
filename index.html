@@ -90,13 +90,23 @@
             startDate.setHours(...this.#startTime)
             endDate.setHours(...this.#endTime)
 
-            if (startDate - currentDate.getTime() < 0){
+            if (endDate - currentDate.getTime() < 0){
                 startDate.setDate(currentDate.getDate() + 1)
                 endDate.setDate(currentDate.getDate() + 1)
             }
 
             this.#startDate = startDate
             this.#endDate = endDate
+        }
+        isActive(){
+            let current = new Date()
+            console.log({
+                curr: current.getTime(),
+                start: this.#startDate.getTime(),
+                end: this.#endDate.getTime(),
+
+            })
+            return (current.getTime() >= this.#startDate.getTime() && current.getTime() < this.#endDate.getTime())
         }
         getStart(){
             return this.#startDate
@@ -126,9 +136,17 @@
         }
     }
 
-    let firstBreak = new TimeSlot('10:00:00', '10:15:00')
-    let lunchBreak = new TimeSlot('12:30:00', '13:15:00')
-    let doneWithWork = new TimeSlot('17:00:00', '23:59:59')
+    let timeslots = [
+        new TimeSlot('10:00:00', '10:15:00'),
+        lunchBreak = new TimeSlot('12:30:00', '13:15:00'),
+        doneWithWork = new TimeSlot('17:00:00', '23:59:59')
+    ]
+
+    timeslots.forEach(function(value){
+        
+      // TODO: Check if any timeslot is active
+    })
+
 
 
     // TODO: Iterate through TimeSlots, execute timeslot function between times

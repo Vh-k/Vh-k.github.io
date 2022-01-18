@@ -164,6 +164,8 @@
         doneWithWork = new TimeSlot('20:50:00', '20:20:50')
     ]
 
+
+    // TODO: Something goes wrong with acquiring next slot....
     function getClosestSlot()
     {
         let currentSlot = null
@@ -177,6 +179,8 @@
             }
         })
 
+
+        // TODO: Current time issue
         if (currentSlot.getDifference().time < 0) {
             // This is the closest slot tomorrow. Set date to tomorrow
             currentSlot.updateTime(1)

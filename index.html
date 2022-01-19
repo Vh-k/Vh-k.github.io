@@ -73,140 +73,310 @@
 </html>
 
 <script>
+    "use strict";
 
-    let slotActive = false
+    function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
 
-    function reset()
-    {
-        slotActive = false
-        document.querySelector('.shrekn').style.display = 'none'
-        document.getElementById("demo").classList.remove('font')
+    function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+    function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+    function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+    function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+    function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+    function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
+    let slotActive = false;
+
+    function reset() {
+        slotActive = false;
+        document.querySelector('.shrekn').style.display = 'none';
+        document.getElementById("demo").classList.remove('font');
     }
 
-    class TimeSlot {
-        #startDate;
-        #endDate;
-        #startTime = [];
-        #endTime = [];
-        constructor(startTime = '12:00:00', endTime = '13:00:00'){
-            this.#startTime = [parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]), parseInt(startTime.split(':')[2]), 0]
-            this.#endTime = [parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), parseInt(endTime.split(':')[2]), 0]
-            this.updateTime()
-        }
-        updateTime(addDays = 0){
-            let startDate = new Date()
-            let endDate = new Date()
-            startDate.setDate(startDate.getDate() + addDays)
-            endDate.setDate(endDate.getDate() + addDays)
-            startDate.setHours(...this.#startTime)
-            endDate.setHours(...this.#endTime)
-            this.#startDate = startDate
-            this.#endDate = endDate
-        }
-        isActive(){
-            let current = new Date()
+    var _startDate = /*#__PURE__*/new WeakMap();
 
-            if (current.getDate() !== this.#endDate.getDate()) {
-                this.updateTime()
+    var _endDate = /*#__PURE__*/new WeakMap();
+
+    var _startTime = /*#__PURE__*/new WeakMap();
+
+    var _endTime = /*#__PURE__*/new WeakMap();
+
+    class TimeSlot {
+        constructor(startTime = '12:00:00', endTime = '13:00:00') {
+            _classPrivateFieldInitSpec(this, _startDate, {
+                writable: true,
+                value: void 0
+            });
+
+            _classPrivateFieldInitSpec(this, _endDate, {
+                writable: true,
+                value: void 0
+            });
+
+            _classPrivateFieldInitSpec(this, _startTime, {
+                writable: true,
+                value: []
+            });
+
+            _classPrivateFieldInitSpec(this, _endTime, {
+                writable: true,
+                value: []
+            });
+
+            _classPrivateFieldSet(this, _startTime, [parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]), parseInt(startTime.split(':')[2]), 0]);
+
+            _classPrivateFieldSet(this, _endTime, [parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), parseInt(endTime.split(':')[2]), 0]);
+
+            this.updateTime();
+        }
+
+        updateTime(addDays = 0) {
+            let startDate = new Date();
+            let endDate = new Date();
+            startDate.setDate(startDate.getDate() + addDays);
+            endDate.setDate(endDate.getDate() + addDays);
+            startDate.setHours(..._classPrivateFieldGet(this, _startTime));
+            endDate.setHours(..._classPrivateFieldGet(this, _endTime));
+
+            _classPrivateFieldSet(this, _startDate, startDate);
+
+            _classPrivateFieldSet(this, _endDate, endDate);
+        }
+
+        isActive() {
+            let current = new Date();
+
+            if (current.getDate() !== _classPrivateFieldGet(this, _endDate).getDate()) {
+                this.updateTime();
             }
 
-            return (current.getTime() >= this.#startDate.getTime() && current.getTime() < this.#endDate.getTime())
+            return current.getTime() >= _classPrivateFieldGet(this, _startDate).getTime() && current.getTime() < _classPrivateFieldGet(this, _endDate).getTime();
         }
-        getStart(){
-            return this.#startDate
+
+        getStart() {
+            return _classPrivateFieldGet(this, _startDate);
         }
-        getEnd(){
-            return this.#endDate
+
+        getEnd() {
+            return _classPrivateFieldGet(this, _endDate);
         }
-        getDifference(){
+
+        getDifference() {
             // Get today's date and time
-            let now = new Date().getTime();
+            let now = new Date().getTime(); // Find the distance between now and the count down date
 
-            // Find the distance between now and the count down date
-            let distance = this.#startDate - now;
+            let distance = _classPrivateFieldGet(this, _startDate) - now; // Time calculations for days, hours, minutes and seconds
 
-            // Time calculations for days, hours, minutes and seconds
             return {
                 time: distance,
                 days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-                seconds: Math.floor((distance % (1000 * 60)) / 1000),
-            }
+                hours: Math.floor(distance % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)),
+                minutes: Math.floor(distance % (1000 * 60 * 60) / (1000 * 60)),
+                seconds: Math.floor(distance % (1000 * 60) / 1000)
+            };
         }
-        doStuff(){
-            let _this = this
 
-            // TODO: Make funny stuff configurable
-
+        doStuff() {
+            let _this = this; // TODO: Make funny stuff configurable
             // Do funny stuff here
-            document.getElementById("demo").innerHTML = "Het is tijd voor tafeltennis!";
-            document.querySelector('.shrekn').style.display = 'block'
-            document.getElementById("demo").classList.add('font')
 
+
+            document.getElementById("demo").innerHTML = "Het is tijd voor tafeltennis!";
+            document.querySelector('.shrekn').style.display = 'block';
+            document.getElementById("demo").classList.add('font');
             let x = setInterval(() => {
-                if(!_this.isActive){
+                if (!_this.isActive) {
                     // clean up & reset interval
-                    reset()
-                    clearInterval(x)
+                    reset();
+                    clearInterval(x);
                 }
             }, 1000);
         }
+
     }
 
+    let timeslots = [new TimeSlot('10:00:00', '10:15:00'), lunchBreak = new TimeSlot('12:27:00', '13:15:00'), // doneWithWork = new TimeSlot('17:00:00', '23:59:59')
+        doneWithWork = new TimeSlot('17:00:00', '23:59:59')]; // TODO: Something goes wrong with acquiring next slot....
 
-
-
-    let timeslots = [
-        new TimeSlot('10:00:00', '10:15:00'),
-        lunchBreak = new TimeSlot('12:27:00', '13:15:00'),
-        // doneWithWork = new TimeSlot('17:00:00', '23:59:59')
-        doneWithWork = new TimeSlot('17:00:00', '23:59:59')
-    ]
-
-
-    // TODO: Something goes wrong with acquiring next slot....
-    function getClosestSlot()
-    {
-        let currentSlot = null
-        timeslots.forEach(function(timeslot){
+    function getClosestSlot() {
+        let currentSlot = null;
+        timeslots.forEach(function (timeslot) {
             if (!currentSlot) {
-                currentSlot = timeslot
+                currentSlot = timeslot;
             } else {
                 if (timeslot.getDifference.time < currentSlot.time) {
-                    currentSlot = timeslot
+                    currentSlot = timeslot;
                 }
             }
-        })
+        }); // TODO: Current time issue
 
-
-        // TODO: Current time issue
         if (currentSlot.getDifference().time < 0) {
             // This is the closest slot tomorrow. Set date to tomorrow
-            currentSlot.updateTime(1)
+            currentSlot.updateTime(1);
         }
 
-        return currentSlot
+        return currentSlot;
     }
 
     let x = setInterval(() => {
-        let closestSlot = null
-        timeslots.forEach(function(timeslot){
-            if(!slotActive){
-                if(timeslot.isActive()){
-                    slotActive = true
-                    timeslot.doStuff()
+        let closestSlot = null;
+        timeslots.forEach(function (timeslot) {
+            if (!slotActive) {
+                if (timeslot.isActive()) {
+                    slotActive = true;
+                    timeslot.doStuff();
                 }
             }
-        })
+        }); // If all slots have negative time difference, pick the slot with the closest startDate. We'll set this one up for tomorrow
 
-        // If all slots have negative time difference, pick the slot with the closest startDate. We'll set this one up for tomorrow
-        let timerSlot = getClosestSlot()
+        let timerSlot = getClosestSlot();
 
-
-        if(!slotActive){
+        if (!slotActive) {
             // Display the result in the element with id="demo"
             document.getElementById("demo").innerHTML = "Het is over " + timerSlot.getDifference().hours + " uur " + timerSlot.getDifference().minutes + " minuten en " + timerSlot.getDifference().seconds + " seconden pas tijd voor tafeltennis 😉";
         }
     }, 1000);
 </script>
+
+<!--<script>-->
+
+<!--    let slotActive = false-->
+
+<!--    function reset()-->
+<!--    {-->
+<!--        slotActive = false-->
+<!--        document.querySelector('.shrekn').style.display = 'none'-->
+<!--        document.getElementById("demo").classList.remove('font')-->
+<!--    }-->
+
+<!--    class TimeSlot {-->
+<!--        #startDate;-->
+<!--        #endDate;-->
+<!--        #startTime = [];-->
+<!--        #endTime = [];-->
+<!--        constructor(startTime = '12:00:00', endTime = '13:00:00'){-->
+<!--            this.#startTime = [parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]), parseInt(startTime.split(':')[2]), 0]-->
+<!--            this.#endTime = [parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), parseInt(endTime.split(':')[2]), 0]-->
+<!--            this.updateTime()-->
+<!--        }-->
+<!--        updateTime(addDays = 0){-->
+<!--            let startDate = new Date()-->
+<!--            let endDate = new Date()-->
+<!--            startDate.setDate(startDate.getDate() + addDays)-->
+<!--            endDate.setDate(endDate.getDate() + addDays)-->
+<!--            startDate.setHours(...this.#startTime)-->
+<!--            endDate.setHours(...this.#endTime)-->
+<!--            this.#startDate = startDate-->
+<!--            this.#endDate = endDate-->
+<!--        }-->
+<!--        isActive(){-->
+<!--            let current = new Date()-->
+
+<!--            if (current.getDate() !== this.#endDate.getDate()) {-->
+<!--                this.updateTime()-->
+<!--            }-->
+
+<!--            return (current.getTime() >= this.#startDate.getTime() && current.getTime() < this.#endDate.getTime())-->
+<!--        }-->
+<!--        getStart(){-->
+<!--            return this.#startDate-->
+<!--        }-->
+<!--        getEnd(){-->
+<!--            return this.#endDate-->
+<!--        }-->
+<!--        getDifference(){-->
+<!--            // Get today's date and time-->
+<!--            let now = new Date().getTime();-->
+
+<!--            // Find the distance between now and the count down date-->
+<!--            let distance = this.#startDate - now;-->
+
+<!--            // Time calculations for days, hours, minutes and seconds-->
+<!--            return {-->
+<!--                time: distance,-->
+<!--                days: Math.floor(distance / (1000 * 60 * 60 * 24)),-->
+<!--                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),-->
+<!--                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),-->
+<!--                seconds: Math.floor((distance % (1000 * 60)) / 1000),-->
+<!--            }-->
+<!--        }-->
+<!--        doStuff(){-->
+<!--            let _this = this-->
+
+<!--            // TODO: Make funny stuff configurable-->
+
+<!--            // Do funny stuff here-->
+<!--            document.getElementById("demo").innerHTML = "Het is tijd voor tafeltennis!";-->
+<!--            document.querySelector('.shrekn').style.display = 'block'-->
+<!--            document.getElementById("demo").classList.add('font')-->
+
+<!--            let x = setInterval(() => {-->
+<!--                if(!_this.isActive){-->
+<!--                    // clean up & reset interval-->
+<!--                    reset()-->
+<!--                    clearInterval(x)-->
+<!--                }-->
+<!--            }, 1000);-->
+<!--        }-->
+<!--    }-->
+
+
+
+
+<!--    let timeslots = [-->
+<!--        new TimeSlot('10:00:00', '10:15:00'),-->
+<!--        lunchBreak = new TimeSlot('12:27:00', '13:15:00'),-->
+<!--        // doneWithWork = new TimeSlot('17:00:00', '23:59:59')-->
+<!--        doneWithWork = new TimeSlot('17:00:00', '23:59:59')-->
+<!--    ]-->
+
+
+<!--    // TODO: Something goes wrong with acquiring next slot....-->
+<!--    function getClosestSlot()-->
+<!--    {-->
+<!--        let currentSlot = null-->
+<!--        timeslots.forEach(function(timeslot){-->
+<!--            if (!currentSlot) {-->
+<!--                currentSlot = timeslot-->
+<!--            } else {-->
+<!--                if (timeslot.getDifference.time < currentSlot.time) {-->
+<!--                    currentSlot = timeslot-->
+<!--                }-->
+<!--            }-->
+<!--        })-->
+
+
+<!--        // TODO: Current time issue-->
+<!--        if (currentSlot.getDifference().time < 0) {-->
+<!--            // This is the closest slot tomorrow. Set date to tomorrow-->
+<!--            currentSlot.updateTime(1)-->
+<!--        }-->
+
+<!--        return currentSlot-->
+<!--    }-->
+
+<!--    let x = setInterval(() => {-->
+<!--        let closestSlot = null-->
+<!--        timeslots.forEach(function(timeslot){-->
+<!--            if(!slotActive){-->
+<!--                if(timeslot.isActive()){-->
+<!--                    slotActive = true-->
+<!--                    timeslot.doStuff()-->
+<!--                }-->
+<!--            }-->
+<!--        })-->
+
+<!--        // If all slots have negative time difference, pick the slot with the closest startDate. We'll set this one up for tomorrow-->
+<!--        let timerSlot = getClosestSlot()-->
+
+
+<!--        if(!slotActive){-->
+<!--            // Display the result in the element with id="demo"-->
+<!--            document.getElementById("demo").innerHTML = "Het is over " + timerSlot.getDifference().hours + " uur " + timerSlot.getDifference().minutes + " minuten en " + timerSlot.getDifference().seconds + " seconden pas tijd voor tafeltennis 😉";-->
+<!--        }-->
+<!--    }, 1000);-->
+<!--</script>-->

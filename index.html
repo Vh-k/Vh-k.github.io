@@ -73,40 +73,75 @@
 </html>
 
 <script>
-    "use strict";
+    function _classPrivateFieldInitSpec(obj, privateMap, value) {
+        _checkPrivateRedeclaration(obj, privateMap);
+        privateMap.set(obj, value);
+    }
 
-    function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+    function _checkPrivateRedeclaration(obj, privateCollection) {
+        if (privateCollection.has(obj)) {
+            throw new TypeError(
+                "Cannot initialize the same private elements twice on an object"
+            );
+        }
+    }
 
-    function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+    function _classPrivateFieldGet(receiver, privateMap) {
+        var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get");
+        return _classApplyDescriptorGet(receiver, descriptor);
+    }
 
-    function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+    function _classApplyDescriptorGet(receiver, descriptor) {
+        if (descriptor.get) {
+            return descriptor.get.call(receiver);
+        }
+        return descriptor.value;
+    }
 
-    function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+    function _classPrivateFieldSet(receiver, privateMap, value) {
+        var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set");
+        _classApplyDescriptorSet(receiver, descriptor, value);
+        return value;
+    }
 
-    function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+    function _classExtractFieldDescriptor(receiver, privateMap, action) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError(
+                "attempted to " + action + " private field on non-instance"
+            );
+        }
+        return privateMap.get(receiver);
+    }
 
-    function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
-
-    function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+    function _classApplyDescriptorSet(receiver, descriptor, value) {
+        if (descriptor.set) {
+            descriptor.set.call(receiver, value);
+        } else {
+            if (!descriptor.writable) {
+                throw new TypeError("attempted to set read only private field");
+            }
+            descriptor.value = value;
+        }
+    }
 
     let slotActive = false;
 
     function reset() {
         slotActive = false;
-        document.querySelector('.shrekn').style.display = 'none';
-        document.getElementById("demo").classList.remove('font');
+        document.querySelector(".shrekn").style.display = "none";
+        document.getElementById("demo").classList.remove("font");
     }
 
-    var _startDate = /*#__PURE__*/new WeakMap();
+    var _startDate = /*#__PURE__*/ new WeakMap();
 
-    var _endDate = /*#__PURE__*/new WeakMap();
+    var _endDate = /*#__PURE__*/ new WeakMap();
 
-    var _startTime = /*#__PURE__*/new WeakMap();
+    var _startTime = /*#__PURE__*/ new WeakMap();
 
-    var _endTime = /*#__PURE__*/new WeakMap();
+    var _endTime = /*#__PURE__*/ new WeakMap();
 
     class TimeSlot {
-        constructor(startTime = '12:00:00', endTime = '13:00:00') {
+        constructor(startTime = "12:00:00", endTime = "13:00:00") {
             _classPrivateFieldInitSpec(this, _startDate, {
                 writable: true,
                 value: void 0
@@ -127,9 +162,19 @@
                 value: []
             });
 
-            _classPrivateFieldSet(this, _startTime, [parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]), parseInt(startTime.split(':')[2]), 0]);
+            _classPrivateFieldSet(this, _startTime, [
+                parseInt(startTime.split(":")[0]),
+                parseInt(startTime.split(":")[1]),
+                parseInt(startTime.split(":")[2]),
+                0
+            ]);
 
-            _classPrivateFieldSet(this, _endTime, [parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), parseInt(endTime.split(':')[2]), 0]);
+            _classPrivateFieldSet(this, _endTime, [
+                parseInt(endTime.split(":")[0]),
+                parseInt(endTime.split(":")[1]),
+                parseInt(endTime.split(":")[2]),
+                0
+            ]);
 
             this.updateTime();
         }
@@ -154,7 +199,10 @@
                 this.updateTime();
             }
 
-            return current.getTime() >= _classPrivateFieldGet(this, _startDate).getTime() && current.getTime() < _classPrivateFieldGet(this, _endDate).getTime();
+            return (
+                current.getTime() >= _classPrivateFieldGet(this, _startDate).getTime() &&
+                current.getTime() < _classPrivateFieldGet(this, _endDate).getTime()
+            );
         }
 
         getStart() {
@@ -174,9 +222,9 @@
             return {
                 time: distance,
                 days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                hours: Math.floor(distance % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)),
-                minutes: Math.floor(distance % (1000 * 60 * 60) / (1000 * 60)),
-                seconds: Math.floor(distance % (1000 * 60) / 1000)
+                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+                seconds: Math.floor((distance % (1000 * 60)) / 1000)
             };
         }
 
@@ -184,10 +232,9 @@
             let _this = this; // TODO: Make funny stuff configurable
             // Do funny stuff here
 
-
             document.getElementById("demo").innerHTML = "Het is tijd voor tafeltennis!";
-            document.querySelector('.shrekn').style.display = 'block';
-            document.getElementById("demo").classList.add('font');
+            document.querySelector(".shrekn").style.display = "block";
+            document.getElementById("demo").classList.add("font");
             let x = setInterval(() => {
                 if (!_this.isActive) {
                     // clean up & reset interval
@@ -196,11 +243,13 @@
                 }
             }, 1000);
         }
-
     }
 
-    let timeslots = [new TimeSlot('10:00:00', '10:15:00'), lunchBreak = new TimeSlot('12:27:00', '13:15:00'), // doneWithWork = new TimeSlot('17:00:00', '23:59:59')
-        doneWithWork = new TimeSlot('17:00:00', '23:59:59')]; // TODO: Something goes wrong with acquiring next slot....
+    let timeslots = [
+        new TimeSlot("10:00:00", "10:15:00"),
+        (lunchBreak = new TimeSlot("12:27:00", "13:15:00")), // doneWithWork = new TimeSlot('17:00:00', '23:59:59')
+        (doneWithWork = new TimeSlot("17:00:00", "23:59:59"))
+    ]; // TODO: Something goes wrong with acquiring next slot....
 
     function getClosestSlot() {
         let currentSlot = null;
@@ -237,7 +286,14 @@
 
         if (!slotActive) {
             // Display the result in the element with id="demo"
-            document.getElementById("demo").innerHTML = "Het is over " + timerSlot.getDifference().hours + " uur " + timerSlot.getDifference().minutes + " minuten en " + timerSlot.getDifference().seconds + " seconden pas tijd voor tafeltennis 😉";
+            document.getElementById("demo").innerHTML =
+                "Het is over " +
+                timerSlot.getDifference().hours +
+                " uur " +
+                timerSlot.getDifference().minutes +
+                " minuten en " +
+                timerSlot.getDifference().seconds +
+                " seconden pas tijd voor tafeltennis 😉";
         }
     }, 1000);
 </script>

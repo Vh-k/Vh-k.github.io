@@ -247,8 +247,8 @@
 
     let timeslots = [
         new TimeSlot("10:00:00", "10:15:00"),
-        (lunchBreak = new TimeSlot("12:27:00", "13:15:00")), // doneWithWork = new TimeSlot('17:00:00', '23:59:59')
-        (doneWithWork = new TimeSlot("17:00:00", "23:59:59"))
+        new TimeSlot("12:27:00", "13:15:00"),
+        new TimeSlot("17:00:00", "23:59:59")
     ];
 
     function getClosestSlot() {
@@ -391,9 +391,8 @@
 //
 //    let timeslots = [
 //        new TimeSlot('10:00:00', '10:15:00'),
-//        lunchBreak = new TimeSlot('12:27:00', '13:15:00'),
-//        // doneWithWork = new TimeSlot('17:00:00', '23:59:59')
-//        doneWithWork = new TimeSlot('17:00:00', '23:59:59')
+//        new TimeSlot('12:27:00', '13:15:00'),
+//        new TimeSlot('17:00:00', '23:59:59')
 //    ]
 //
 //
@@ -440,5 +439,5 @@
 //            // Display the result in the element with id="demo"
 //            document.getElementById("demo").innerHTML = "Het is over " + timerSlot.getDifference().hours + " uur " + timerSlot.getDifference().minutes + " minuten en " + timerSlot.getDifference().seconds + " seconden pas tijd voor tafeltennis 😉";
 //        }
-//    }, 1000);
+//   }, 1000);
 </script>

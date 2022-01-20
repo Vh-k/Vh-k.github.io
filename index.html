@@ -236,11 +236,9 @@
             document.querySelector(".shrekn").style.display = "block";
             document.getElementById("demo").classList.add("font");
             let x = setInterval(() => {
-                console.log("yeah");
 
                 if (!_this.isActive()) {
                     // clean up & reset interval
-                    console.log("No longer active!!!");
                     reset();
                     clearInterval(x);
                 }
@@ -377,10 +375,8 @@
 //           document.getElementById("demo").classList.add('font')
 //
 //           let x = setInterval(() => {
-//               console.log('yeah')
 //               if(!_this.isActive()){
 //                   // clean up & reset interval
-//                   console.log('No longer active!!!')
 //                   reset()
 //                   clearInterval(x)
 //               }
